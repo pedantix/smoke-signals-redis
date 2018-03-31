@@ -35,6 +35,7 @@ public func configure(
     let redisDatabse = RedisDatabase(config: redisConfig)
     databases.add(database: redisDatabse, as: .redis)
     services.register(databases)
+    services.register(redisConfig)
 
     configureWebsockets(&services)
 }

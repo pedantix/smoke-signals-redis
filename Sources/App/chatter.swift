@@ -18,6 +18,8 @@ func chatterHandler(_ ws: WebSocket, req: Request) throws {
                 ws.send(message)
             })
             subscriptionClient = conn
+        }).catch({ err in
+            logger.error("Error connecting \(err)")
         })
     
     ws.onText({ text in
