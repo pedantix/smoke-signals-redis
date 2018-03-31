@@ -5,12 +5,12 @@ import Vapor
 func chatterHandler(_ ws: WebSocket, req: Request) throws {
     let channelName: String = try req.parameter()
     let logger = try req.make(Logger.self)
-    let clientConfig = try req.make(RedisClientConfig.self)
+    let client = try req.make(RedisDatabase.self)
     var subscriptionClient: RedisClient? = nil
 
     // Subscribe to channel
     guard let loop = MultiThreadedEventLoopGroup.currentEventLoop else { return }
-    _ = RedisDatabase(config: clientConfig)
+    _ = client
         .makeConnection(on: loop)
         .map(to: Void.self, { conn in
             _ = try conn.subscribe(Set([channelName]),subscriptionHandler: { redisData in
